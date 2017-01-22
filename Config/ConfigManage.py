@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-
+from __future__ import with_statement
+import json
 """
 @version: ??
 @author: luffyren
@@ -12,8 +13,10 @@
 """
 
 
-def func():
-    pass
+def get_settings():
+    """解析配置文件"""
+    with open("config.json") as config:
+        return json.load(config)
 
 
 class Main():
