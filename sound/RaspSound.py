@@ -11,6 +11,8 @@
 @time: 2017/1/22 17:10
 """
 
+import os
+
 class RaspSound():
     def __init__(self):
         pass
@@ -19,9 +21,11 @@ class RaspSound():
         pass
 
     def say(self, msg):
-        pass
+        cmd = "espeak -ven+f3 -k5 -s150 '%s'" % msg
+        os.system(cmd)
 
 
 if __name__ == '__main__':
-    pass
+    test = RaspSound()
+    test.say("ni hao")
 
