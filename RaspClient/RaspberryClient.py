@@ -3,24 +3,20 @@
 
 
 """
-@version: ??
+@version: v1.0
 @author: luffyren
 @site: http://www.luffyren.club
 @software: PyCharm Community Edition
-@file: packet.py
-@time: 2017/2/17 14:37
+@file: RaspberryClient.py
+@time: 2016/12/12 23:52
 """
 
+import sys
 
-def func():
+
+def main():
     pass
-
-
-class Packet():
-    def __init__(self):
-        pass
-
 
 if __name__ == '__main__':
-    pass
+    sys.exit(main())
 
