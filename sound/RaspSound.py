@@ -13,6 +13,7 @@
 
 import os
 
+
 class RaspSound():
     def __init__(self):
         pass
@@ -20,12 +21,21 @@ class RaspSound():
     def play_music(self):
         pass
 
-    def say(self, msg):
-        cmd = "espeak -ven+f3 -k5 -s150 '%s'" % msg
-        os.system(cmd)
+    def say(self, msg, is_chinese=True):
+        """
 
+        :param msg:
+        :param is_chinese:
+        :return:
+        """
+        cmd = None
+        if is_chinese:
+            cmd = u"espeak -vzh '%s'" % msg
+        else:
+            cmd = u"espeak -ven+f3 -k5 -s150 '%s'" % msg
+        os.system(cmd)
 
 if __name__ == '__main__':
     test = RaspSound()
-    test.say("ni hao")
+    test.say("你好")
 
