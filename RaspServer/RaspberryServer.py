@@ -10,33 +10,36 @@
 @file: RaspberryServer.py
 @time: 2016/12/13 21:53
 """
+import json
+import os
+import sys
+import tornado.web
+import tornado.websocket
+import tornado.ioloop
 
-import socket
 
-def func():
-    pass
+class RaspberryServer(tornado.websocket.WebSocketHandler):
+    """
+
+    """
+    def open(self):
+        print "New client connected"
+        self.write_message("You are connected")
+
+    def on_message(self, message):
+        self.write_message(message)
+
+    def on_close(self):
+        print "Client disconnected"
 
 
-class Server(object):
-    def __init__(self):
-        self.__clients = {}
+application = tornado.web.Application([
+    (r"/", RaspberryServer),
+])
 
-    def send_msg(self, msg):
-        for client in self.__clients:
-            pass
-
-    def start(self):
-        pass
-
-    def run(self):
-        address = ('', 9527)
-        tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        tcp_socket.bind(address=address)
-        tcp_socket.listen(5)
-        while True:
-            client, client_address = tcp_socket.accept()
-            self.__clients[client] = client_address
-
-if __name__ == '__main__':
-    pass
-
+if __name__ == "__main__":
+    curr_path = os.path.dirname(__file__)
+    with open(curr_path + "/config", 'r') as f:
+        server_config = json.load(f)
+    application.listen(server_config["server_port"])
+    tornado.ioloop.IOLoop.instance().start()
