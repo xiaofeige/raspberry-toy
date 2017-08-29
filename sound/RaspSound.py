@@ -37,5 +37,5 @@ class RaspSound():
 
 if __name__ == '__main__':
     test = RaspSound()
-    test.say("你好")
+    test.say(u"你好")
 
