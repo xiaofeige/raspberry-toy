@@ -21,7 +21,7 @@ import time
 class RaspberryClient(object):
     def __init__(self):
         curr_path = os.path.dirname(__file__)
-        with open(curr_path+"/config.json", 'r') as f:
+        with open(curr_path+"/config", 'r') as f:
             self.__config = json.load(f)
         websocket.enableTrace(True)
         self.__ws = websocket.WebSocketApp(self.__config["server_host"],
