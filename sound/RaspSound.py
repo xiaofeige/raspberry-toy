@@ -30,12 +30,12 @@ class RaspSound():
         """
         cmd = None
         if is_chinese:
-            cmd = u"espeak -vzh '%s'" % msg
+            cmd = "espeak -vzh '%s'" % msg
         else:
-            cmd = u"espeak -ven+f3 -k5 -s150 '%s'" % msg
+            cmd = "espeak -ven+f3 -k5 -s150 '%s'" % msg
         os.system(cmd)
 
 if __name__ == '__main__':
     test = RaspSound()
-    test.say(u"你好")
+    test.say("你好")
 
