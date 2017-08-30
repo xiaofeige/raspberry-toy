@@ -63,7 +63,7 @@ class RaspberryClient(object):
                 time.sleep(1)
                 ws.send("Hello %d" % i)
             time.sleep(1)
-            ws.close()
+            # ws.close()
             print("thread terminating...")
 
         thread.start_new_thread(run, ())
