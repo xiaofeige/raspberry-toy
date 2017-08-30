@@ -16,6 +16,8 @@ import sys
 import tornado.web
 import tornado.websocket
 import tornado.ioloop
+
+sys.path.append("..")
 from protocol.packet import Packet
 
 
