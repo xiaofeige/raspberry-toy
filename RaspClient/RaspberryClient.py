@@ -16,6 +16,8 @@ import websocket
 import thread
 import json
 import time
+from protocol.packet import Packet
+from RaspTalker.RaspTalker import RaspTalker
 
 
 class RaspberryClient(object):
@@ -30,6 +32,7 @@ class RaspberryClient(object):
                                            on_close=self.on_close)
         self.__ws.on_open = self.on_open
         self.__ws.run_forever()
+        self.__talker = RaspTalker()
 
     def __del__(self):
         pass
@@ -41,7 +44,11 @@ class RaspberryClient(object):
         :param msg:
         :return:
         """
-        print msg
+        pkt = Packet.parse_packet(msg)
+        if pkt.get_message_type() == Packet.PKT_SPEECH:
+            self.__talker.say(msg=msg)
+        else:
+            pass
 
     def on_error(self, ws, error):
         """
@@ -59,12 +66,11 @@ class RaspberryClient(object):
         print "connetion trying to build..."
 
         def run(*args):
-            for i in range(3):
-                time.sleep(1)
-                ws.send("Hello %d" % i)
+            pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
+            ws.send(pkt.to_string())
             time.sleep(1)
             # ws.close()
-            print("thread terminating...")
+            print("thread running...")
 
         thread.start_new_thread(run, ())
 
@@ -75,6 +81,7 @@ def main():
     :return:
     """
     client = RaspberryClient()
+    print "client connection has established..."
     return 0
 
 if __name__ == '__main__':

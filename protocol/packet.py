@@ -13,21 +13,40 @@
 
 
 class Packet(object):
+    """
+    desc:
+
+    """
+    PKT_LOGIN = "0"
+    PKT_LOGOUT = "1"
+    PKT_SPEECH = "2"
+    PKT_CMD = "3"
+
+    PKT_RASPBERRY = "raspberry"
+
     def __init__(self, msg_type=None, payload=None):
         self.__msg_type = msg_type
         self.__payload = payload
 
-    def parse_packet(self, data):
+    @staticmethod
+    def parse_packet(data):
         """
 
         :param data:
         :return:
         """
+        print data
         msg_array = data.split("|")
-        self.__msg_type = msg_array[0]
+        return Packet(msg_array[0], msg_array[1])
 
     def get_message_type(self):
         return self.__msg_type
+
+    def get_payload(self):
+        return self.__payload
+
+    def to_string(self):
+        return self.__msg_type + "|" + self.__payload
 
 if __name__ == '__main__':
     pass

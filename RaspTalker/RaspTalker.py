@@ -7,7 +7,7 @@
 @author: luffyren
 @site: http://www.luffyren.club
 @software: PyCharm Community Edition
-@file: sound.py
+@file: RaspTalker.py
 @time: 2017/1/22 17:10
 """
 
