@@ -26,13 +26,13 @@ class RaspberryClient(object):
         with open(curr_path+"/config", 'r') as f:
             self.__config = json.load(f)
         websocket.enableTrace(True)
-        self.__ws = websocket.WebSocketApp(self.__config["server_host"],
+        self.__ws = websocket.WebSocketApp(self.__config["client"]["host_port"],
                                            on_message=self.on_message,
                                            on_error=self.on_error,
                                            on_close=self.on_close)
+        self.__talker = RaspTalker()
         self.__ws.on_open = self.on_open
         self.__ws.run_forever()
-        self.__talker = RaspTalker()
 
     def __del__(self):
         pass
@@ -47,8 +47,11 @@ class RaspberryClient(object):
         pkt = Packet.parse_packet(msg)
         if pkt.get_message_type() == Packet.PKT_SPEECH:
             self.__talker.say(msg=msg)
+        elif pkt.get_message_type() == Packet.PKT_LOGIN:
+            pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
+            ws.send(pkt.to_string())
         else:
-            pass
+            print "received unknown packet..."
 
     def on_error(self, ws, error):
         """
@@ -66,9 +69,9 @@ class RaspberryClient(object):
         print "connetion trying to build..."
 
         def run(*args):
-            pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
-            ws.send(pkt.to_string())
-            time.sleep(1)
+            # pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
+            # ws.send(pkt.to_string())
+            # time.sleep(1)
             # ws.close()
             print("thread running...")
 

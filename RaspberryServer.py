@@ -35,7 +35,6 @@ class RaspberryHandler(tornado.websocket.WebSocketHandler):
         RaspberryHandler.clients[self] = RaspberryHandler.count
 
     def on_message(self, message):
-        print message
         pkt = Packet.parse_packet(data=message)
         if pkt.get_message_type() == Packet.PKT_LOGIN:
             print pkt.get_payload() + " login..."
@@ -71,5 +70,5 @@ if __name__ == "__main__":
     with open(curr_path + "/config", 'r') as f:
         server_config = json.load(f)
     raspberry_server = RaspberryApplication()
-    raspberry_server.listen(server_config["server_port"])
+    raspberry_server.listen(server_config["server"]["server_port"])
     tornado.ioloop.IOLoop.instance().start()
