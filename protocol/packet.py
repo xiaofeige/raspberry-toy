@@ -17,12 +17,12 @@ class Packet(object):
     desc:
 
     """
-    PKT_LOGIN = "0"
-    PKT_LOGOUT = "1"
-    PKT_SPEECH = "2"
-    PKT_CMD = "3"
+    PKT_LOGIN = u"0"
+    PKT_LOGOUT = u"1"
+    PKT_SPEECH = u"2"
+    PKT_CMD = u"3"
 
-    PKT_RASPBERRY = "raspberry"
+    PKT_RASPBERRY = u"raspberry"
 
     def __init__(self, msg_type=None, payload=None):
         self.__msg_type = msg_type
@@ -36,7 +36,7 @@ class Packet(object):
         :return:
         """
         print data
-        msg_array = data.split("|")
+        msg_array = data.split(u"|")
         return Packet(msg_array[0], msg_array[1])
 
     def get_message_type(self):
@@ -46,7 +46,7 @@ class Packet(object):
         return self.__payload
 
     def to_string(self):
-        return self.__msg_type + "|" + self.__payload
+        return self.__msg_type + u"|" + self.__payload
 
 if __name__ == '__main__':
     pass

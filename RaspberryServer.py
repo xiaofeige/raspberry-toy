@@ -18,9 +18,6 @@ import tornado.websocket
 import tornado.ioloop
 from protocol.packet import Packet
 
-reload(sys)
-sys.setdefaultencoding("utf-8")
-
 
 class RaspberryHandler(tornado.websocket.WebSocketHandler):
     """

@@ -37,5 +37,5 @@ class RaspTalker(object):
 
 if __name__ == '__main__':
     test = RaspTalker()
-    test.say("你好")
+    test.say(u"你好")
 

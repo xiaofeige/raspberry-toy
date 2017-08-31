@@ -19,9 +19,6 @@ import time
 from protocol.packet import Packet
 from RaspTalker.RaspTalker import RaspTalker
 
-reload(sys)
-sys.setdefaultencoding("utf-8")
-
 
 class RaspberryClient(object):
     def __init__(self):
