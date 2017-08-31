@@ -1,0 +1,8 @@
+{
+  "client":{
+    "host_port": "ws://localhost:9527/"
+  },
+  "server":{
+    "server_port":9527
+  }
+}

@@ -18,8 +18,6 @@ import tornado.websocket
 import tornado.ioloop
 from protocol.packet import Packet
 
-sys.path.append("..")
-
 
 class RaspberryHandler(tornado.websocket.WebSocketHandler):
     """
@@ -70,8 +68,6 @@ class RaspberryApplication(tornado.web.Application):
 
 if __name__ == "__main__":
     curr_path = os.path.dirname(__file__)
-    if curr_path == '':
-        curr_path = '.'
     with open(curr_path + "/config", 'r') as f:
         server_config = json.load(f)
     raspberry_server = RaspberryApplication()
