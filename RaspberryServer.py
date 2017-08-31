@@ -66,7 +66,7 @@ class RaspberryApplication(tornado.web.Application):
 
 
 if __name__ == "__main__":
-    curr_path = os.path.dirname(__file__)
+    curr_path = os.path.split(os.path.realpath(__file__))[0]
     with open(curr_path + "/config", 'r') as f:
         server_config = json.load(f)
     raspberry_server = RaspberryApplication()

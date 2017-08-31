@@ -22,7 +22,7 @@ from RaspTalker.RaspTalker import RaspTalker
 
 class RaspberryClient(object):
     def __init__(self):
-        curr_path = os.path.dirname(__file__)
+        curr_path = os.path.split(os.path.realpath(__file__))[0]
         with open(curr_path+"/config", 'r') as f:
             self.__config = json.load(f)
         websocket.enableTrace(True)
