@@ -18,6 +18,9 @@ import tornado.websocket
 import tornado.ioloop
 from protocol.packet import Packet
 
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 
 class RaspberryHandler(tornado.websocket.WebSocketHandler):
     """
@@ -41,7 +44,10 @@ class RaspberryHandler(tornado.websocket.WebSocketHandler):
             if pkt.get_payload() == Packet.PKT_RASPBERRY:
                 RaspberryHandler.clients['raspberry'] = self
         else:
-            RaspberryHandler.clients['raspberry'].write_message(message)
+            try:
+                RaspberryHandler.clients['raspberry'].write_message(message)
+            except:
+                print "raspberry not found..."
 
     def on_close(self):
         print "Client disconnected"

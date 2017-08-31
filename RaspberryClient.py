@@ -19,6 +19,9 @@ import time
 from protocol.packet import Packet
 from RaspTalker.RaspTalker import RaspTalker
 
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 
 class RaspberryClient(object):
     def __init__(self):
@@ -46,7 +49,7 @@ class RaspberryClient(object):
         """
         pkt = Packet.parse_packet(msg)
         if pkt.get_message_type() == Packet.PKT_SPEECH:
-            self.__talker.say(msg=msg)
+            self.__talker.say(msg=pkt.get_payload())
         elif pkt.get_message_type() == Packet.PKT_LOGIN:
             pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
             ws.send(pkt.to_string())
