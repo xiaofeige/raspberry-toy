@@ -14,7 +14,7 @@
 import os
 
 
-class RaspSound():
+class RaspTalker(object):
     def __init__(self):
         pass
 
@@ -36,6 +36,6 @@ class RaspSound():
         os.system(cmd)
 
 if __name__ == '__main__':
-    test = RaspSound()
+    test = RaspTalker()
     test.say("你好")
 
