@@ -6,3 +6,13 @@
 
 目前支持远程控制发邮件，播放音乐等后期将会继续实现其他复杂
 的功能。
+
+
+## Server端
+###依赖
+> tornado
+
+## Client端
+###依赖
+> websocket-client
+> espeak
