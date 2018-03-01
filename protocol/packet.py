@@ -35,7 +35,6 @@ class Packet(object):
         :param data:
         :return:
         """
-        print data
         msg_array = data.split(u"|")
         return Packet(msg_array[0], msg_array[1])
 
