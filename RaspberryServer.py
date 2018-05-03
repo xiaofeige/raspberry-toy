@@ -23,7 +23,8 @@ class RaspberryHandler(tornado.websocket.WebSocketHandler):
     """
 
     """
-    clients = {}
+    clients = []
+    agents = []
     count = 0
 
     def open(self):
@@ -31,24 +32,36 @@ class RaspberryHandler(tornado.websocket.WebSocketHandler):
         pkt = Packet(Packet.PKT_LOGIN, "You are connected,so, who are you?")
         self.write_message(pkt.to_string())
 
-        RaspberryHandler.count += 1
-        RaspberryHandler.clients[self] = RaspberryHandler.count
+    def broadcast(self, msg):
+        """
+
+        :param msg:
+        :return:
+        """
+        for agent in RaspberryHandler.agents:
+            agent.write_message(msg)
 
     def on_message(self, message):
         pkt = Packet.parse_packet(data=message)
         if pkt.get_message_type() == Packet.PKT_LOGIN:
             print pkt.get_payload() + " login..."
             if pkt.get_payload() == Packet.PKT_RASPBERRY:
-                RaspberryHandler.clients['raspberry'] = self
+                RaspberryHandler.agents.append(self)
+            elif pkt.get_payload() == Packet.PKT_CLIENT:
+                RaspberryHandler.clients.append(self)
         else:
             try:
-                RaspberryHandler.clients['raspberry'].write_message(message)
+                self.broadcast(message)
             except:
                 print "raspberry not found..."
 
     def on_close(self):
         print "Client disconnected"
-        del RaspberryHandler.clients[self]
+        try:
+            RaspberryHandler.clients.remove(self)
+            RaspberryHandler.agents.remove(self)
+        except ValueError:
+            pass
 
 
 class RaspberryApplication(tornado.web.Application):

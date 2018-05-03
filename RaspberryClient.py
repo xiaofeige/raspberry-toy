@@ -13,11 +13,9 @@
 import os
 import sys
 import websocket
-import thread
 import json
-import time
 from protocol.packet import Packet
-from RaspTalker.RaspTalker import RaspTalker
+from websocket import create_connection
 
 
 class RaspberryClient(object):
@@ -25,57 +23,41 @@ class RaspberryClient(object):
         curr_path = os.path.split(os.path.realpath(__file__))[0]
         with open(curr_path+"/config", 'r') as f:
             self.__config = json.load(f)
-        websocket.enableTrace(True)
-        self.__ws = websocket.WebSocketApp(self.__config["client"]["host_port"],
-                                           on_message=self.on_message,
-                                           on_error=self.on_error,
-                                           on_close=self.on_close)
-        self.__talker = RaspTalker()
-        self.__ws.on_open = self.on_open
-        self.__ws.run_forever()
 
-    def __del__(self):
+        self.ws = create_connection(url=self.__config["client"]["host_port"])
+
+    def reconnect(self):
+        """
+
+        :return:
+        """
         pass
 
-    def on_message(self, ws, msg):
+    def login(self):
+        try:
+            pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_CLIENT)
+            self.ws.send(pkt.to_string())
+            msg = self.ws.recv()
+            print msg
+            return 0
+        except websocket._exceptions.WebSocketConnectionClosedException:
+            print "network initialize failed..."
+            return 1
+
+    def start(self):
         """
 
-        :param ws:
-        :param msg:
         :return:
         """
-        pkt = Packet.parse_packet(msg)
-        if pkt.get_message_type() == Packet.PKT_SPEECH:
-            self.__talker.say(msg=pkt.get_payload())
-        elif pkt.get_message_type() == Packet.PKT_LOGIN:
-            pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
-            ws.send(pkt.to_string())
-        else:
-            print "received unknown packet..."
-
-    def on_error(self, ws, error):
-        """
-
-        :param ws:
-        :param error:
-        :return:
-        """
-        print "oops...error occured....due to %s " % str(error)
-
-    def on_close(self, ws):
-        print "this connection is closing..."
-
-    def on_open(self, ws):
-        print "connetion trying to build..."
-
-        def run(*args):
-            # pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
-            # ws.send(pkt.to_string())
-            # time.sleep(1)
-            # ws.close()
-            print("thread running...")
-
-        thread.start_new_thread(run, ())
+        if self.login() > 0:
+            print "failed to login..."
+            return
+        while True:
+            data = raw_input("cmd>:")
+            pkt = Packet(Packet.PKT_WORDS, data)
+            self.ws.send(pkt.to_string())
+            msg = self.ws.recv()
+            print msg
 
 
 def main():
@@ -84,7 +66,14 @@ def main():
     :return:
     """
     client = RaspberryClient()
-    print "client connection has established..."
+    print "starting client..."
+    while True:
+        client.start()
+
+        print "press 0 to restart client..."
+        choice = raw_input(">:")
+        if choice not in [0, '0']:
+            break
     return 0
 
 if __name__ == '__main__':

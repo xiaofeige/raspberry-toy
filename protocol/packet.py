@@ -21,8 +21,11 @@ class Packet(object):
     PKT_LOGOUT = u"1"
     PKT_SPEECH = u"2"
     PKT_CMD = u"3"
+    PKT_HEART_BEAT = u'4'
+    PKT_WORDS = u'5'
 
     PKT_RASPBERRY = u"raspberry"
+    PKT_CLIENT = u'client'
 
     def __init__(self, msg_type=None, payload=None):
         self.__msg_type = msg_type
