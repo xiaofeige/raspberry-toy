@@ -53,11 +53,15 @@ class RaspberryClient(object):
             print "failed to login..."
             return
         while True:
-            data = raw_input("cmd>:")
-            pkt = Packet(Packet.PKT_WORDS, data)
-            self.ws.send(pkt.to_string())
-            msg = self.ws.recv()
-            print msg
+            try:
+                data = raw_input("cmd>:")
+                pkt = Packet(Packet.PKT_WORDS, data)
+                self.ws.send(pkt.to_string())
+                msg = self.ws.recv()
+                print msg
+            except KeyboardInterrupt:
+                self.ws.close()
+                break
 
 
 def main():
@@ -67,13 +71,7 @@ def main():
     """
     client = RaspberryClient()
     print "starting client..."
-    while True:
-        client.start()
-
-        print "press 0 to restart client..."
-        choice = raw_input(">:")
-        if choice not in [0, '0']:
-            break
+    client.start()
     return 0
 
 if __name__ == '__main__':

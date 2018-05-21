@@ -19,6 +19,7 @@ import time
 import socket
 from protocol.packet import Packet
 from RaspTalker.RaspTalker import RaspTalker
+import cv2
 
 
 class RaspberryAgent(object):
@@ -90,6 +91,9 @@ class RaspberryAgent(object):
             pkt = Packet(Packet.PKT_LOGIN, Packet.PKT_RASPBERRY)
             ws.send(pkt.to_string())
             while True:
+
+                while True:
+                    pass
                 time.sleep(1)
 
         thread.start_new_thread(run, ())
@@ -111,7 +115,7 @@ def main():
     :return:
     """
     print "agent starting..."
-    client = RaspberryAgent()
+    Agetnt = RaspberryAgent()
     return 0
 
 if __name__ == '__main__':
